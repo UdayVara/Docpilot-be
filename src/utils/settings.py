@@ -1,0 +1,11 @@
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class SettingsSetup(BaseSettings):
+    app_name: str
+    DATABASE_URL: str
+
+    model_config = SettingsConfigDict(env_file=".env")
+
+Settings = SettingsSetup()
+
