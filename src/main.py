@@ -1,6 +1,13 @@
-from src.utils.db.base import B
+from src.utils.db.base import Base
 from fastapi import FastAPI
+from src.utils.db.session import Engine
+from src.models.models import *
+
 app = FastAPI()
+
+# Bind Base & Engine
+Base.metadata.create_all(Engine)
+
 
 
 @app.get("/")
