@@ -1,5 +1,5 @@
+from src.utils.db.base import B
 from fastapi import FastAPI
-
 app = FastAPI()
 
 

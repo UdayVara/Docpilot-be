@@ -11,3 +11,8 @@ wheels/
 
 # env
 .env*
+
+
+#Pycharm
+.idea/
+*.iml
