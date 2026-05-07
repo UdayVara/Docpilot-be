@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from User.Schema.LoginSchema import LoginSchema
+from src.User.Schema.LoginSchema import LoginSchema
 from src.models.user import User
 from src.User.Schema.SignupSchema import SignupSchema
 from src.utils.security.jwt import create_access_token

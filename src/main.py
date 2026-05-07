@@ -5,11 +5,19 @@ from src.models.models import *
 from src.User.router import router as UserRouter
 from fastapi.middleware.cors import CORSMiddleware
 
+from src.utils.exception.custom_exception import CustomException
+from src.utils.exception.handler import custom_exception_handler
+
 app = FastAPI()
 
 # Bind Base & Engine
 Base.metadata.create_all(Engine)
 
+# Add Custom Exception
+app.add_exception_handler(
+    CustomException,
+    custom_exception_handler
+)
 
 app.add_middleware(
     CORSMiddleware,
