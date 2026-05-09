@@ -39,26 +39,28 @@ def sign_up(body: SignupSchema, db: Session):
 
 
 
-def login(body:LoginSchema, db: Session):
-
+def loginService(body:LoginSchema, db: Session):
+    print("Inside loginService")
     # 🔹 find user
-    user = db.query(User).filter(User.email == body.Email).first()
-
-    if not user:
+    existing_user = db.query(User).filter(User.email == body.email).first()
+    print("User : ",existing_user)
+    if not existing_user:
         raise HTTPException(status_code=400, detail="Invalid email or password")
-
+    verifyPassResult = verify_password(body.password, existing_user.password)
+    print("result:",verifyPassResult)
     # 🔹 verify password
-    if not verify_password(body.Password, user.password):
+    if not verify_password(body.password, existing_user.password):
         raise HTTPException(status_code=400, detail="Invalid email or password")
 
     # 🔹 generate token
     token = create_access_token({
-        "sub": str(user.id),
-        "email": user.email
+        "sub": str(existing_user.id),
+        "email": existing_user.email
     })
 
     return {
         "message": "Login successful",
         "access_token": token,
         "statusCode": 200,
+        "user":existing_user
     }
