@@ -2,6 +2,7 @@ import datetime
 import uuid
 from sqlalchemy import Column, String, Boolean, DateTime
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
 
 from src.utils.db.base import Base
 
@@ -16,3 +17,10 @@ class User(Base):
     active = Column(Boolean, nullable=False, default=True)
     created_at = Column(DateTime, nullable=False, default=datetime.datetime.now())
     updated_at = Column(DateTime, nullable=False, default=datetime.datetime.now())
+
+    # One user -> many chats
+    chats = relationship(
+        "Chat",
+        back_populates="user",
+        cascade="all, delete"
+    )
