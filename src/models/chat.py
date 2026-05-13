@@ -16,6 +16,8 @@ class Chat(Base):
 
     name = Column(String, nullable=False)
 
+    fileUrl = Column(String, nullable=False)
+
     user_id = Column(
         UUID(as_uuid=True),
         ForeignKey("users.id", ondelete="CASCADE"),

@@ -1,0 +1,33 @@
+# src/chat/router.py
+
+from fastapi import APIRouter, UploadFile, File, Form, Depends
+from sqlalchemy.orm import Session
+
+from src.middleware.auth_middleware import get_current_user
+from src.utils.db.session import get_db
+from src.Chat.controller import create_chat
+
+router = APIRouter(
+    prefix="/chat",
+    tags=["Chat"]
+)
+
+
+@router.post("/")
+async def upload_chat_pdf(
+    name: str = Form(...),
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    user_id: str = Depends(get_current_user),
+):
+    return await create_chat(
+        name=name,
+        user_id=user_id,
+        file=file,
+        db=db
+    )
+
+# @router.get("/")
+# async def get_chat(db: Session = Depends(get_db),
+#     user_id: str = Depends(get_current_user)):
+#     return await get_chat(db=db, user_id=user_id)

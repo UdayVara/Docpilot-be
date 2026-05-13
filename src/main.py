@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from src.utils.db.session import Engine
 from src.models.models import *
 from src.User.router import router as UserRouter
+from src.Chat.router import router as ChatRouter
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.utils.exception.custom_exception import CustomException
@@ -34,3 +35,4 @@ def read_root():
 
 
 app.include_router(UserRouter)
+app.include_router(ChatRouter)
