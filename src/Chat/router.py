@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from src.middleware.auth_middleware import get_current_user
 from src.utils.db.session import get_db
-from src.Chat.controller import create_chat
+from src.Chat.controller import create_chat,get_chats
 
 router = APIRouter(
     prefix="/chat",
@@ -21,13 +21,12 @@ async def upload_chat_pdf(
     user_id: str = Depends(get_current_user),
 ):
     return await create_chat(
-        name=name,
         user_id=user_id,
         file=file,
         db=db
     )
 
-# @router.get("/")
-# async def get_chat(db: Session = Depends(get_db),
-#     user_id: str = Depends(get_current_user)):
-#     return await get_chat(db=db, user_id=user_id)
+@router.get("/")
+async def get_chat(db: Session = Depends(get_db),
+    user_id: str = Depends(get_current_user)):
+    return await get_chats(db=db, user_id=user_id)

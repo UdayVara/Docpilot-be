@@ -20,7 +20,7 @@ def get_current_user(
 
     if not payload:
         raise CustomException(
-            statusCode=401,
+            status_code=401,
             message="Invalid or expired token"
         )
 

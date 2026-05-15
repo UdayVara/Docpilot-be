@@ -21,7 +21,6 @@ cloudinary.config(
 
 
 async def create_chat(
-        name: str,
         user_id: str,
         file: UploadFile,
         db: Session,
@@ -69,6 +68,41 @@ async def create_chat(
     except Exception as e:
         db.rollback()
 
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
+
+async def get_chats(
+        user_id: str,
+        db: Session
+):
+    try:
+        chats = (
+            db.query(Chat)
+            .filter(Chat.user_id == user_id)
+            .order_by(Chat.created_at.desc())
+            .all()
+        )
+
+        return {
+            "success": True,
+            "statusCode": 200,
+            "message": "Chats fetched successfully",
+            "data": [
+                {
+                    "id": str(chat.id),
+                    "name": chat.name,
+                    "fileUrl": chat.fileUrl,
+                    "user_id": str(chat.user_id),
+                    "created_at": chat.created_at.isoformat()
+                    if chat.created_at else None
+                }
+                for chat in chats
+            ]
+        }
+
+    except Exception as e:
         raise HTTPException(
             status_code=500,
             detail=str(e)
