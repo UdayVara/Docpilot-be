@@ -10,6 +10,9 @@ from sqlalchemy.orm import Session
 
 from src.models.chat import Chat
 from src.utils.settings import Settings
+from src.Chat.services.vector_service import (
+    process_pdf_and_store_vectors
+)
 
 # Cloudinary Config
 cloudinary.config(
@@ -52,6 +55,13 @@ async def create_chat(
         db.add(new_chat)
         db.commit()
         db.refresh(new_chat)
+        result = await process_pdf_and_store_vectors(
+            file=file,
+            chat_id=str(new_chat.id),
+            user_id=user_id
+        )
+
+        print("result", result)
 
         return {
             "success": True,
