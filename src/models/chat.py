@@ -34,3 +34,9 @@ class Chat(Base):
 
     # Relationship
     user = relationship("User", back_populates="chats")
+
+    messages = relationship(
+        "Message",
+        back_populates="chat",
+        cascade="all, delete"
+    )

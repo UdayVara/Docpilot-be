@@ -8,6 +8,12 @@ from src.middleware.auth_middleware import get_current_user
 from src.utils.db.session import get_db
 from src.Chat.controller import create_chat,get_chats
 
+from pydantic import BaseModel
+
+class AskBody(BaseModel):
+    question: str
+
+
 router = APIRouter(
     prefix="/chat",
     tags=["Chat"]
@@ -33,18 +39,20 @@ async def get_chat(db: Session = Depends(get_db),
     return await get_chats(db=db, user_id=user_id)
 
 
-@router.post("/ask/:chat_id")
+@router.post("/ask/{chat_id}")
 async def ask_question_controller(
         chat_id: str,
-        question: str
+        body: AskBody
 ):
 
     try:
-
+        print("API HIT")
         response = await ask_ai(
             chat_id=chat_id,
-            question=question
+            question=body.question
         )
+
+        print("RESPONSE",response)
 
         return {
             "success": True,
